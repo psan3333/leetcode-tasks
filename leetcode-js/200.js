@@ -15,6 +15,7 @@ var numIslands = function (grid) {
             if (!grid[i][j]) continue;
 
             let queue = [[i, j]];
+            grid[i][j] = 0;
             let newQueue = [];
 
             const checkPos = (x, y) => {
