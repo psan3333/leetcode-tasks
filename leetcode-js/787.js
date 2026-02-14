@@ -1,11 +1,13 @@
 /**
- * @param {number[][]} times
  * @param {number} n
+ * @param {number[][]} flights
+ * @param {number} src
+ * @param {number} dst
  * @param {number} k
  * @return {number}
  */
 
-class GraphHeap {
+class PriorityQueue {
     #heap = [];
     constructor(comp) {
         this.comp = comp;
@@ -79,53 +81,23 @@ class GraphHeap {
     }
 }
 
-function dijkstraSolver(graph, start) {
-    let startNode = graph[start];
-    startNode.dist = 0;
-
-    let comparator = (a, b) => a.dist - b.dist;
-    let queue = new GraphHeap(comparator);
-    queue.insert(startNode);
-    while (queue.length > 0) {
-        let item = queue.getHead();
-        for (let [to, weight] of item.next) {
-            if (graph[to].dist > graph[item.value].dist + weight) {
-                graph[to].dist = graph[item.value].dist + weight;
-                queue.insert(graph[to]);
-            }
-        }
-    }
-
-    let result = 0;
-    for (let node in graph) {
-        result = Math.max(result, graph[node].dist);
-    }
-
-    return result === Infinity ? -1 : result;
-}
-
-var networkDelayTime = function (times, n, k) {
+var findCheapestPrice = function (n, flights, src, dst, k) {
     let graph = {};
-    for (let i = 1; i <= n; i++) {
+
+    for (let i = 0; i < n; i++) {
         graph[i] = {
-            value: i,
+            city: i,
             next: [],
-            dist: Infinity,
+            price: Infinity,
+            stopsTaken: 0,
         };
     }
-    for (let edge of times) {
-        let [from, to, weight] = edge;
-        graph[from].next.push([to, weight]);
-    }
-
-    return dijkstraSolver(graph, k);
 };
 
-let times = [
-        [2, 1, 1],
-        [2, 3, 1],
-        [3, 4, 1],
-    ],
-    n = 4,
-    k = 2;
-console.log(networkDelayTime(times, n, k));
+let heap = new PriorityQueue((a, b) => b - a);
+for (let i = 0; i < 10; i++) {
+    heap.insert(i);
+}
+for (let i = 0; i < 10; i++) {
+    console.log(heap.getHead());
+}
