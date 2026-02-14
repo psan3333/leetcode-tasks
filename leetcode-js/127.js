@@ -49,3 +49,11 @@ var ladderLength = function (beginWord, endWord, wordList) {
     }
     return 0;
 };
+
+let set = new Set([1, 2, 3, 4]);
+let keys = set.keys();
+console.log(set, keys);
+for (let i = 0; i < set.size; i++) {
+    set.delete(i + 1);
+    console.log(set);
+}
