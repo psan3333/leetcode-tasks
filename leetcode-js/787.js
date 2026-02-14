@@ -7,97 +7,42 @@
  * @return {number}
  */
 
-class PriorityQueue {
-    #heap = [];
-    constructor(comp) {
-        this.comp = comp;
-    }
-
-    get length() {
-        return this.#heap.length;
-    }
-
-    parent(index) {
-        return Math.floor((index - 1) / 2);
-    }
-
-    leftChild(index) {
-        return 2 * index + 1;
-    }
-
-    rightChild(index) {
-        return 2 * index + 2;
-    }
-
-    swap(i1, i2) {
-        [this.#heap[i1], this.#heap[i2]] = [this.#heap[i2], this.#heap[i1]];
-    }
-
-    heapifyUp(index) {
-        while (
-            this.parent(index) >= 0 &&
-            this.comp(this.#heap[this.parent(index)], this.#heap[index]) > 0
-        ) {
-            this.swap(this.parent(index), index);
-            index = this.parent(index);
-        }
-    }
-
-    heapifyDown(index) {
-        let left = this.leftChild(index);
-        let right = this.rightChild(index);
-        let maxIdx = index;
-
-        if (
-            left < this.length &&
-            this.comp(this.#heap[maxIdx], this.#heap[left]) > 0
-        ) {
-            maxIdx = left;
-        }
-        if (
-            right < this.length &&
-            this.comp(this.#heap[maxIdx], this.#heap[right]) > 0
-        ) {
-            maxIdx = right;
-        }
-
-        if (index !== maxIdx) {
-            this.swap(index, maxIdx);
-            this.heapifyDown(maxIdx);
-        }
-    }
-
-    getHead() {
-        let result = this.#heap[0];
-        this.swap(0, this.length - 1);
-        this.#heap.pop();
-        this.heapifyDown(0);
-        return result;
-    }
-
-    insert(value) {
-        this.#heap.push(value);
-        this.heapifyUp(this.length - 1);
-    }
-}
-
 var findCheapestPrice = function (n, flights, src, dst, k) {
-    let graph = {};
+    let graph = new Array(n).fill(Infinity);
+    graph[src] = 0;
+    let iterations = new Array(n).fill(0);
 
-    for (let i = 0; i < n; i++) {
-        graph[i] = {
-            city: i,
-            next: [],
-            price: Infinity,
-            stopsTaken: 0,
-        };
+    const relax = (iteration) => {
+        let relaxApplied = false;
+        let changes = [];
+        let newIterations = new Array(0).fill(0);
+        for (let item of graph) {
+            changes.push(item);
+        }
+        for (let [start, end, price] of flights) {
+            if (
+                graph[start] + price < graph[end] &&
+                graph[start] + price < changes[end] &&
+                iterations[start] + 1 <= iteration
+            ) {
+                relaxApplied = true;
+                changes[end] = graph[start] + price;
+                newIterations[end] = iterations[start] + 1;
+            }
+        }
+        for (let i = 0; i < changes.length; i++) {
+            if (newIterations[i] === iteration) {
+                graph[i] = changes[i];
+                iterations[i] = newIterations[i];
+            }
+        }
+        return relaxApplied;
+    };
+
+    for (let i = 1; i <= k + 1; i++) {
+        // n repeats
+        relax(i);
     }
+    if (relax()) return -1;
+    return graph[dst] === Infinity ? -1 : graph[dst];
 };
-
-let heap = new PriorityQueue((a, b) => b - a);
-for (let i = 0; i < 10; i++) {
-    heap.insert(i);
-}
-for (let i = 0; i < 10; i++) {
-    console.log(heap.getHead());
-}
