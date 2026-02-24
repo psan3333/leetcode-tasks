@@ -41,7 +41,6 @@ var findItinerary = function (tickets) {
 let tickets = [
     ["JFK", "SFO"],
     ["JFK", "ATL"],
-    ["ATL", "SFO"],
     ["SFO", "JFK"],
     ["ATL", "AAA"],
     ["AAA", "ATL"],
@@ -49,5 +48,7 @@ let tickets = [
     ["BBB", "ATL"],
     ["ATL", "CCC"],
     ["CCC", "ATL"],
+    ["ATL", "DDD"],
+    ["DDD", "JFK"],
 ];
 console.log(findItinerary(tickets));
