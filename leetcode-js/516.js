@@ -18,6 +18,7 @@ var longestPalindromeSubseq = function (s) {
                 table[i][j] = Math.max(table[i + 1][j], table[i][j - 1]);
             }
         }
+        console.log(table);
     }
     return table[0][s.length - 1];
 };
