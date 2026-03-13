@@ -1,54 +1,20 @@
 /**
- * @param {string[][]} tickets
- * @return {string[]}
+ * @param {number[]} coins
+ * @param {number} amount
+ * @return {number}
  */
-var findItinerary = function (tickets) {
-    let graph = {};
-    for (let [from, to] of tickets) {
-        if (!(from in graph)) {
-            graph[from] = {
-                next: [],
-                used: [],
-            };
+var coinChange = function (coins, amount) {
+    if (amount === 0) return 0;
+    const sums = new Array(amount + 1).fill(Infinity);
+    sums[0] = 0;
+
+    for (let coin of coins) {
+        for (let i = 0; i <= amount; i++) {
+            if (i + coin <= amount) {
+                sums[i + coin] = Math.min(sums[i] + 1, sums[i + coin]);
+            }
         }
-        if (!(to in graph)) {
-            graph[to] = {
-                next: [],
-                used: [],
-            };
-        }
-        graph[from].next.push(to);
     }
 
-    for (let key in graph) {
-        graph[key].next.sort().reverse();
-    }
-
-    let itinerary = [];
-    const traverse = (node) => {
-        console.log(node);
-        let destinations = graph[node].next;
-        while (destinations.length > 0) {
-            let next = destinations.pop();
-            traverse(next);
-        }
-        itinerary.push(node);
-    };
-    traverse("JFK");
-    return itinerary.reverse();
+    return sums[amount] !== Infinity ? sums[amount] : -1;
 };
-
-let tickets = [
-    ["JFK", "SFO"],
-    ["JFK", "ATL"],
-    ["SFO", "JFK"],
-    ["ATL", "AAA"],
-    ["AAA", "ATL"],
-    ["ATL", "BBB"],
-    ["BBB", "ATL"],
-    ["ATL", "CCC"],
-    ["CCC", "ATL"],
-    ["ATL", "DDD"],
-    ["DDD", "JFK"],
-];
-console.log(findItinerary(tickets));
