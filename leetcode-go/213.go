@@ -1,7 +1,6 @@
 package main
 
 import (
-	"fmt"
 	"math"
 	"slices"
 )
@@ -30,9 +29,4 @@ func rob2(nums []int) int {
 	}
 	result := max(maxInterval(0, len(nums)-1), maxInterval(1, len(nums)))
 	return result
-}
-
-func main() {
-	nums := []int{1, 3, 2, 2}
-	fmt.Println(rob2(nums))
 }
