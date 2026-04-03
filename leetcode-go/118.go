@@ -1,7 +1,5 @@
 package main
 
-import "fmt"
-
 func generate(numRows int) [][]int {
 	result := [][]int{
 		{1},
@@ -15,8 +13,4 @@ func generate(numRows int) [][]int {
 		result = append(result, newRow)
 	}
 	return result
-}
-
-func main() {
-	fmt.Println(generate(5))
 }
