@@ -1,7 +1,6 @@
 package main
 
 import (
-	"fmt"
 	"math"
 )
 
@@ -29,10 +28,4 @@ func coinChange(coins []int, amount int) int {
 	} else {
 		return dpArr[amount]
 	}
-}
-
-func main() {
-	coins := []int{2}
-	amount := 5
-	fmt.Println(coinChange(coins, amount))
 }
