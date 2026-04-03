@@ -1,9 +1,5 @@
 package main
 
-import (
-	"fmt"
-)
-
 func climbStairs(n int) int {
 	oneBehind := 1
 	twoBehind := 1
@@ -18,8 +14,4 @@ func climbStairs(n int) int {
 		oneBehind = result
 	}
 	return result
-}
-
-func main() {
-	fmt.Println(climbStairs(6))
 }
